@@ -1,0 +1,5 @@
+ <div class="welcome-msg pt-3 pb-4">
+        <h1>Hi <span class="text-primary">John</span>, Welcome back</h1>
+        <p>Very detailed &amp; featured admin.</p>
+        <a class="btn btn-primary" href="{{route('admin.sliders.add')}}">Crear</a>
+    </div>
