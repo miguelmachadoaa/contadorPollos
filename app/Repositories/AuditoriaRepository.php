@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\Auditoria;
 use App\Exceptions\FormularioException;
-use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Pusher\Pusher;
 
@@ -52,6 +51,17 @@ final class AuditoriaRepository{
         return true;
     }
 
+    //funcion update del reporitorio 
+
+    public function update(array $data, $id){
+
+        $auditoria = $this->model->with('usuario')->find($id);
+
+        return $auditoria->update($data);
+
+
+    }
+
 
     public function all()
     {   
@@ -66,6 +76,13 @@ final class AuditoriaRepository{
     public function list()
     {
         return $this->model->with('usuario')->where('user_id', Auth::user()->id)->get();
+    }
+
+    public function delete($id)
+    {
+        $auditoria = $this->model->findOrFail($id);
+        return  $auditoria->delete();
+        
     }
 
 

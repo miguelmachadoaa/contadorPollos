@@ -92,55 +92,6 @@
 				<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
 					<ul class="navbar-nav ml-lg-5">
 						
-						
-
-
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle libre-baskerville-regular" href="#" id="navbarDropdownDestinos" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								{{ __('main.destinos') }} <i class="fa fa-solid fa-caret-down"></i>
-							</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdownDestinos">
-								@foreach($destinosMenu as $dm)
-									@if(Session::get('locale') == $dm->idioma)
-									<a class="dropdown-item" href="{{url('destinos/'.$dm->slug)}}">{{$dm->titulo}}</a>
-									@endif
-								@endforeach
-
-							</div>
-						</li>
-
-
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle libre-baskerville-regular" href="#" id="navbarDropdownPaquetes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								{{ __('main.itinerarios') }} <i class="fa fa-solid fa-caret-down"></i>
-							</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdownPaquetes">
-								@foreach($paquetesMenu as $pm)
-									@if(Session::get('locale') == $pm->idioma)
-									<a class="dropdown-item" href="{{url('paquetes/'.$pm->slug)}}">{{$pm->titulo}}</a>
-									@endif
-									
-								@endforeach
-							</div>
-						</li>
-
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle libre-baskerville-regular" href="#" id="navbarDropdownPromociones" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								{{ __('main.promociones') }} <i class="fa fa-solid fa-caret-down"></i>
-							</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdownPromociones">
-								@foreach($promocionesMenu as $pm)
-									@if(Session::get('locale') == $pm->idioma)
-									<a class="dropdown-item" href="{{url('promociones/'.$pm->slug)}}">{{$pm->titulo}}</a>
-									@endif
-									
-								@endforeach
-							</div>
-						</li>
-
-						<li class="nav-item  ">
-							<a class="nav-link libre-baskerville-regular" href="{{url('blogs')}}">Blogs</a>
-						</li>
 
 						<li class="nav-item  ">
 							<a class="nav-link libre-baskerville-regular" href="{{url('contacto')}}">{{ __('main.contacto') }}</a>

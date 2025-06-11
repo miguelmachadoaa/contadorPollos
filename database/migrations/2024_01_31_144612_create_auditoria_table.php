@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('auditoria', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->integer('type_id');
-            $table->string('type');
-            $table->datetime('fecha');
-            $table->string('accion');
-            $table->text('data');
+            $table->integer('user_id')->nullable();
+            $table->integer('type_id')->nullable();
+            $table->string('type')->nullable();
+            $table->datetime('fecha')->nullable();
+            $table->string('accion')->nullable();
+            $table->text('data')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

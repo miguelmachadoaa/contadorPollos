@@ -12,45 +12,51 @@ return new class extends Migration
         Schema::create('sap_records', function (Blueprint $table) {
             $table->id();
 
-            $table->string('BUKRS', 10);       // Sociedad o compañía
-            $table->string('GJAHR', 4);        // Año fiscal (4 dígitos)
-            $table->string('DOCNR', 20);       // Número de documento
-            $table->string('PLACA', 20)->nullable();      // Placa vehículo
-            $table->decimal('TARAP', 10, 2)->nullable();  // Tarifa o importe
-            $table->date('FECHP')->nullable();             // Fecha (entrada?)
-            $table->time('HORAP')->nullable();             // Hora
+            $table->string('sociedad')->nullable();
+            $table->string('ejercicio')->nullable();
+            $table->string('ticket')->nullable();
+            $table->string('placa')->nullable();
 
-            $table->decimal('BRUTP', 10, 2)->nullable();  // Importe bruto
-            $table->date('FECBP')->nullable();
-            $table->time('HORBP')->nullable();
+            $table->decimal('peso_tara_inicial', 10, 2)->nullable();
+            $table->date('fecha_tara_inicial')->nullable();
+            $table->time('hora_tara_inicial')->nullable();
 
-            $table->string('REPEP', 50)->nullable();      // Repetición o referencia
-            $table->date('FECRP')->nullable();
-            $table->time('HORRP')->nullable();
+            $table->decimal('peso_bruto_planta', 10, 2)->nullable();
+            $table->decimal('prom_neto_planta', 10, 2)->nullable();
 
-            $table->decimal('NETOP', 10, 2)->nullable();  // Importe neto
-            $table->date('FECFP')->nullable();
-            $table->time('HORFP')->nullable();
+            $table->date('fecha_inicio')->nullable();
+            $table->time('hora_inicio')->nullable();
 
-            $table->string('CODTRA', 20)->nullable();     // Código transporte
-            $table->string('CODCH', 20)->nullable();       // Código chasis o similar
-            $table->string('CODAC', 20)->nullable();       // Código acción
-            $table->string('NORCA', 20)->nullable();       // Número de carátula o similar
-            $table->string('CODGA', 20)->nullable();       // Código garantía
-            $table->string('NROJAULA', 20)->nullable();    // Número de jaula o caja
+            $table->decimal('peso_bruto_espera', 10, 2)->nullable();
 
-            $table->decimal('AVEXJ', 10, 2)->nullable();
-            $table->string('NUMLO', 20)->nullable();
-            $table->decimal('AVEMU', 10, 2)->nullable();
-            $table->decimal('AVEDEC', 10, 2)->nullable();
-            $table->decimal('AVEDES', 10, 2)->nullable();
+            $table->date('fecha_merma')->nullable();
+            $table->time('hora_merma')->nullable();
 
+            $table->decimal('neto_fin_planta', 10, 2)->nullable();
+            $table->date('fecha_fin_planta')->nullable();
+            $table->time('hora_fin_planta')->nullable();
+
+            $table->string('transportista')->nullable();
+            $table->string('ci_chofer')->nullable();
+            $table->string('chofer')->nullable();
+
+            $table->string('cod_procedencia')->nullable();
+            $table->string('procedencia')->nullable();
+
+            $table->string('orden_carga')->nullable();
+            $table->string('n_galpon')->nullable();
+            $table->integer('jaulas')->nullable();
+            $table->integer('aves_por_jaula')->nullable();
+            $table->integer('cant_aves')->nullable();
+            $table->string('num_lote')->nullable();
+
+            $table->integer('aves_muertas')->nullable();
+            $table->integer('aves_faltantes')->nullable();
+            $table->integer('aves_descartadas')->nullable();
+            $table->integer('aves_contador')->nullable();
             $table->timestamps();
+
             $table->softDeletes();
-
-            $table->index('DOCNR');
-            $table->index('BUKRS');
-
 
         });
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Repositories\UserRepository;
+use App\Services\ApiService;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -16,6 +17,7 @@ class HomeController extends Controller
      */
     public function __construct(
         private readonly UserRepository $userRepository,
+        private readonly ApiService $apiService,
     )
     {
         $this->middleware('auth');
@@ -28,7 +30,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-
         $users = $this->userRepository->all()->count();
 
         return view('admin.home.home', compact(

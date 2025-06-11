@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Repositories\AuditoriaRepository;
-use App\Models\Auditoria;
+use App\Models\SapRecord;
 use App\Events\Notify;
 use Auth;
 use Illuminate\Support\Str;
 use View;
 use Pusher\Pusher;
 use App\Custom\fpdf\fpdf as fpdf;
-class AuditoriaController extends Controller
+
+class SapController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -23,7 +24,6 @@ class AuditoriaController extends Controller
     )
     {
         $this->middleware('auth');
-
         
     }
 
@@ -34,10 +34,8 @@ class AuditoriaController extends Controller
      */
     public function index()
     {
-
-        $auditoria = Auditoria::join('clientes', 'auditoria.cliente_id', '=', 'clientes.id')->join('users', 'auditoria.user_id', '=', 'users.id')->get();
-
-        return view('admin.auditoria.home', compact('auditoria'));
+       
+        return view('admin.sap.home' );
     }
 
     public function add($id_cliente)

@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\ReporteController;
 use App\Http\Controllers\Admin\AuditoriaController;
+use App\Http\Controllers\Admin\SapController;
 
 use Illuminate\Support\Facades\Auth;
 /*
@@ -50,6 +51,31 @@ Route::post('/admin/configuracion/update', [ConfiguracionController::class, 'upd
 ->name('admin.configuracion.update');
 Route::get('/admin/configuracion/{id}/delete', [ConfiguracionController::class, 'delete'])
 ->name('admin.configuracion.delete');
+
+Route::get('/admin/configuracion', [ConfiguracionController::class, 'index'])
+->name('admin.configuracion.index');
+Route::get('/admin/configuracion/add', [ConfiguracionController::class, 'add'])
+->name('admin.configuracion.add');
+Route::post('/admin/configuracion/store', [ConfiguracionController::class, 'store'])
+->name('admin.configuracion.store');
+Route::post('/admin/configuracion/uploadimg/{id}', [ConfiguracionController::class, 'uploadimg'])
+->name('admin.configuracion.uploadimg');
+Route::get('/admin/configuracion/{id}/edit', [ConfiguracionController::class, 'edit'])
+->name('admin.configuracion.edit');
+Route::post('/admin/configuracion/update', [ConfiguracionController::class, 'update'])
+->name('admin.configuracion.update');
+Route::get('/admin/configuracion/{id}/delete', [ConfiguracionController::class, 'delete'])
+->name('admin.configuracion.delete'); 
+
+Route::resource('admin/sap', SapController::class)->names([
+    'index' => 'admin.sap.index',
+    'create' => 'admin.sap.create',
+    'store' => 'admin.sap.store',
+    'show' => 'admin.sap.show',
+    'edit' => 'admin.sap.edit',
+    'update' => 'admin.sap.update',
+    'destroy' => 'admin.sap.destroy',
+]);
 
 /** Contratos  */
 

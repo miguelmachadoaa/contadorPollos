@@ -6,14 +6,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <title>Migtours</title>
+  <title>Contador La Caridad</title>
 
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{url('assets/css/style-starter.css')}}">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" >
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-
+   @livewireStyles
   @yield('css')
 
   <!-- google fonts -->
@@ -44,6 +44,7 @@
 
         <li><a href="{{route('admin.configuracion.index')}}"><i class="fa fa-cog"></i> <span>Configuracion</span></a></li>
         <li><a href="{{route('admin.users.index')}}"><i class="fa fa-users"></i> <span>Usuarios</span></a></li>
+        <li><a href="{{route('admin.sap.index')}}"><i class="fa fa-table"></i> <span>Registros</span></a></li>
 
       </ul>
       <!-- //sidebar nav end -->
@@ -437,6 +438,8 @@ var urlNotifiacionesUpdateAll = "{{route('admin.notificaciones.updateall')}}";
 
 
 </script>
+
+@livewireScripts
 
 </body>
 

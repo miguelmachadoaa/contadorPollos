@@ -80,6 +80,9 @@ class HomeController extends Controller
     public function index()
     {
 
+        return redirect('/login');
+
+
         $idioma = Session::get('locale');
 
         $idioma = $idioma??'es';

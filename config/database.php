@@ -92,6 +92,22 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
+        //datos de prod
+        'odbc' => [
+            'driver' => 'odbc',
+        //    'dsn' => 'Driver={MaxDB};Server=172.30.151.135;database=CPR',
+            'dns'=>'MAXDB',
+            'database' => 'CPR',
+            'username' => 'RETENCION2',
+            'password' => '12345678'
+        ],
+        'odbcQA' => [
+            'driver' => 'odbc',
+            'dsn' => 'Driver={MaxDB};Server=172.30.151.133;database=CQA',
+            'database' => 'CQA',
+            'username' => 'RETENCION2',
+            'password' => '12345678'
+        ]
 
     ],
 
