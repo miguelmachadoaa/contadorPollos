@@ -38,8 +38,8 @@ class GetDataSap extends Command
         ->table('SAPCPR.ZMM_CABROM')
         ->select('*')
         ->where('FECFD',  date("Ymd"))
-       // ->orWhere('FECHA',  date("Ymd",strtotime('-1 day')))
-       // ->orWhere('FECHA',  date("Ymd",strtotime('-2 day')))
+        ->orWhere('FECHA',  date("Ymd",strtotime('-1 day')))
+        ->orWhere('FECHA',  date("Ymd",strtotime('-2 day')))
        //->limit(1)
         ->get();
 
