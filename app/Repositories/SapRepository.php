@@ -164,5 +164,16 @@ final class SapRepository{
         
     }
 
+    public function searchBy(array $data)
+    {
+        $query = $this->model->select('*');
+
+        foreach($data as $key=>$value){
+            $query->where($key, $value);
+        }
+        
+        return $query->get();
+    }
+
 
 }
