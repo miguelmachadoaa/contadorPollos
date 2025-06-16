@@ -45,6 +45,8 @@ class GetDataSap extends Command
 
         foreach($tickets as $t){
 
+            echo $t->DOCNR.' / ';
+
             $t2 = DB::connection('odbc')
             ->table('SAPCPR.ZMM_DETROM')
             ->select('*')
