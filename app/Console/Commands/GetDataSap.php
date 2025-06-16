@@ -91,6 +91,8 @@ class GetDataSap extends Command
 
     public function formatFecha($fecha){
 
+        dd($fecha);
+
         return Carbon::createFromFormat('Ymd', $fecha)->format('Y-m-d');
 
 
