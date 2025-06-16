@@ -37,9 +37,9 @@ class GetDataSap extends Command
         $tickets = DB::connection('odbc')
         ->table('SAPCPR.ZMM_CABROM')
         ->select('*')
-        ->where('FECFD',  date("Ymd"))
-        ->orWhere('FECFD',  date("Ymd",strtotime('-1 day')))
-        ->orWhere('FECFD',  date("Ymd",strtotime('-2 day')))
+      //  ->where('FECFD',  date("Ymd"))
+      //  ->orWhere('FECFD',  date("Ymd",strtotime('-1 day')))
+      //  ->orWhere('FECFD',  date("Ymd",strtotime('-2 day')))
        //->limit(1)
         ->get();
 
