@@ -69,7 +69,7 @@ class GetDataSap extends Command
                 'ci_chofer'=>$t->CODCH,
                 'chofer'=>' ',
                 'cod_procedencia'=>$t->CODAC,
-                'procedencia'=>$t->,
+                'procedencia'=>' ',
                 'orden_carga'=>$t->NORCA,
                 'n_galpon'=>$t->CODGA,
                 'jaulas'=>$t->NROJAULA,
