@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Repositories\SapRepository;
+use Carbon\Carbon;
 use DB;
 
 class GetDataSap extends Command
@@ -56,15 +57,15 @@ class GetDataSap extends Command
                 'ticket'=>$t->DOCNR,
                 'placa'=>$t->PLACA,
                 'peso_tara_inicial'=>$t2->TARAP,
-                'fecha_tara_inicial'=>$t2->FECHP,
+                'fecha_tara_inicial'=>$this->formatFecha($t2->FECHP),
                 'hora_tara_inicial'=>$t2->HORAP,
                 'peso_bruto_planta'=>$t2->BRUTP,
                 'prom_neto_planta'=>0,
-                'fecha_inicio'=>$t2->FECBP,
+                'fecha_inicio'=>$this->formatFecha($t2->FECBP),
                 'hora_inicio'=>$t2->HORBP,
                 'peso_bruto_espera'=>$t2->REPEP,
                 'neto_fin_planta'=>$t2->NETOP,
-                'fecha_fin_planta'=>$t2->FECFP,
+                'fecha_fin_planta'=>$this->formatFecha($t2->FECFP),
                 'hora_fin_planta'=>$t2->HORFP,
                 'transportista'=>$t->CODTRA,
                 'ci_chofer'=>$t->CODCH,
@@ -84,6 +85,13 @@ class GetDataSap extends Command
             ]);
 
         }
+
+
+    }
+
+    public function formatFecha($fecha){
+
+        return Carbon::createFromFormat('Ymd', $fecha)->format('Y-m-d');
 
 
     }
