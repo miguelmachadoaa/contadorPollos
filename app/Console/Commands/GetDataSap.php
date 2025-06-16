@@ -26,15 +26,35 @@ class GetDataSap extends Command
      */
     public function handle()
     {
-        $retenciones = DB::connection('odbc')
-        ->table('SAPCPR.ZFI_IMPUESTOS')
+        $tickets = DB::connection('odbc')
+        ->table('SAPCPR.ZMM_CABROM')
         ->select('*')
-       // ->where('FECHA',  date("Ymd"))
+        ->where('FECFD',  date("Ymd"))
+       // ->orWhere('FECHA',  date("Ymd",strtotime('-1 day')))
+       // ->orWhere('FECHA',  date("Ymd",strtotime('-2 day')))
+       //->limit(1)
+        ->get();
+
+        foreach($tickets as $t){
+
+            dd($t->DOCNR);
+        }
+
+ $tickets2 = DB::connection('odbc')
+        ->table('SAPCPR.ZMM_DETROM')
+        ->select('*')
+      //  ->where('FECFD',  date("Ymd"))
        // ->orWhere('FECHA',  date("Ymd",strtotime('-1 day')))
        // ->orWhere('FECHA',  date("Ymd",strtotime('-2 day')))
        ->limit(1)
         ->get();
 
-        dd($retenciones);
+        
+
+
+
+        dd($tickets, $tickets2);
     }
 }
+
+

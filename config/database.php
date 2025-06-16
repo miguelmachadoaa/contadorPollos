@@ -93,20 +93,26 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
         //datos de prod
-        'odbc' => [
+        /*'odbc' => [
             'driver' => 'odbc',
-        //    'dsn' => 'Driver={MaxDB};Server=172.30.151.135;database=CPR',
-            'dns'=>'MAXDB',
+            'dsn' => 'Driver={MAXDB};Server=172.30.151.135;database=CPR',
+            'database' => 'CPR',
+            'username' => 'RETENCION2',
+            'password' => '12345678'
+        ],*/
+        'odbcQA' => [
+            'driver' => 'odbc',
+            'dsn' => 'MAXDB',
             'database' => 'CPR',
             'username' => 'RETENCION2',
             'password' => '12345678'
         ],
-        'odbcQA' => [
+        'odbc' => [
             'driver' => 'odbc',
-            'dsn' => 'Driver={MaxDB};Server=172.30.151.133;database=CQA',
+            'dsn' => 'MAXDBCONTADOR',
             'database' => 'CQA',
-            'username' => 'RETENCION2',
-            'password' => '12345678'
+            'username' => 'CONTADOR',
+            'password' => '753159'
         ]
 
     ],
