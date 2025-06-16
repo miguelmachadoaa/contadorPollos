@@ -25,6 +25,7 @@ class GetDataSap extends Command
     public function __construct(
         private readonly SapRepository $sapRepository
     ) {
+        parent::__construct();
     }
 
     /**
