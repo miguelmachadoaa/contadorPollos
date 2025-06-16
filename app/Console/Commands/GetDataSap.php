@@ -91,8 +91,9 @@ class GetDataSap extends Command
 
     public function formatFecha($fecha){
 
-        dd($fecha);
-
+        if($fecha == '00000000'){
+            return null;
+        }
         return Carbon::createFromFormat('Ymd', $fecha)->format('Y-m-d');
 
 
