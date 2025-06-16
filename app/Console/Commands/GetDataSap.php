@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Repositories\SapRepository;
 use DB;
 
 class GetDataSap extends Command
@@ -21,6 +22,11 @@ class GetDataSap extends Command
      */
     protected $description = 'Command description';
 
+    public function __construct(
+        private readonly SapRepository $sapRepository
+    ) {
+    }
+
     /**
      * Execute the console command.
      */
@@ -37,23 +43,48 @@ class GetDataSap extends Command
 
         foreach($tickets as $t){
 
-            dd($t->DOCNR);
+            $t2 = DB::connection('odbc')
+            ->table('SAPCPR.ZMM_DETROM')
+            ->select('*')
+            ->where('DOCNR',  $t->DOCNR)
+            ->first();
+
+            $this->sapRepository->create([
+                'sociedad'=>$t->BUKRS,
+                'ejercicio'=>$t->GJAHR,
+                'ticket'=>$t->DOCNR,
+                'placa'=>$t->PLACA,
+                'peso_tara_inicial'=>$t2->TARAP,
+                'fecha_tara_inicial'=>$t2->FECHP,
+                'hora_tara_inicial'=>$t2->HORAP,
+                'peso_bruto_planta'=>$t2->BRUTP,
+                'prom_neto_planta'=>0,
+                'fecha_inicio'=>$t2->FECBP,
+                'hora_inicio'=>$t2->HORBP,
+                'peso_bruto_espera'=>$t2->REPEP,
+                'neto_fin_planta'=>$t2->NETOP,
+                'fecha_fin_planta'=>$t2->FECFP,
+                'hora_fin_planta'=>$t2->HORFP,
+                'transportista'=>$t->CODTRA,
+                'ci_chofer'=>$t->CODCH,
+                'chofer'=>' ',
+                'cod_procedencia'=>$t->CODAC,
+                'procedencia'=>$t->,
+                'orden_carga'=>$t->NORCA,
+                'n_galpon'=>$t->CODGA,
+                'jaulas'=>$t->NROJAULA,
+                'aves_por_jaula'=>$t2->AVEXJ,
+                'cant_aves'=>$t->NROJAUL*$t2->AVEXJ,
+                'num_lote'=>$t->NUMLO,
+                'aves_muertas'=>$t2->AVEMU,
+                'aves_faltantes'=>$t2->AVEDEC,
+                'aves_descartadas'=>$t2->AVEDES,
+                'aves_contador'=>0
+            ]);
+
         }
 
- $tickets2 = DB::connection('odbc')
-        ->table('SAPCPR.ZMM_DETROM')
-        ->select('*')
-      //  ->where('FECFD',  date("Ymd"))
-       // ->orWhere('FECHA',  date("Ymd",strtotime('-1 day')))
-       // ->orWhere('FECHA',  date("Ymd",strtotime('-2 day')))
-       ->limit(1)
-        ->get();
 
-        
-
-
-
-        dd($tickets, $tickets2);
     }
 }
 

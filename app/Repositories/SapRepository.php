@@ -75,16 +75,15 @@ final class SapRepository{
 
     public function create(array $data)
     {
+        $ticket = $this->model->where('ticket', $data['ticket'])->first();
 
-        $this->model->create([
-            'user_id'=>Auth::user()?Auth::user()->id:0,
-            'fecha'=>now(),
-            'type'=>$data['type'],
-            'type_id'=>$data['type_id'],
-            'accion'=>$data['accion'],
-            'data'=>$data['data'],
-            'cliente_id'=>$data['cliente_id']??null,
-        ]);
+        if($ticket){
+            $this->model->update($data, $ticket);
+
+        }else{
+            $this->model->create($data);
+
+        }
 
         return true;
     }
