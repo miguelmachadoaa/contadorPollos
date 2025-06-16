@@ -78,7 +78,7 @@ final class SapRepository{
         $ticket = $this->model->where('ticket', $data['ticket'])->first();
 
         if($ticket){
-            $this->model->update($data, $ticket);
+            $ticket->update($data, $ticket);
 
         }else{
             $this->model->create($data);
