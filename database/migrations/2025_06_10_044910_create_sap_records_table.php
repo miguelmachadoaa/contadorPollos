@@ -54,6 +54,8 @@ return new class extends Migration
             $table->integer('aves_faltantes')->nullable();
             $table->integer('aves_descartadas')->nullable();
             $table->integer('aves_contador')->nullable();
+            $table->string('status')->nullable();
+
             $table->timestamps();
 
             $table->softDeletes();

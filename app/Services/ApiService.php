@@ -101,7 +101,7 @@ class ApiService
     public function closeticket(array $data)
     {
         $this->authenticate();
-        return $this->makeRequest('GET', "/closeticket");
+        return $this->makeRequest('POST', "/closeticket", $data);
     }
 
 
