@@ -45,6 +45,7 @@ class GetDataSap extends Command
 
         foreach($tickets as $t){
 
+
             echo $t->DOCNR.' / ';
 
             $t2 = DB::connection('odbc')
@@ -52,6 +53,8 @@ class GetDataSap extends Command
             ->select('*')
             ->where('DOCNR',  $t->DOCNR)
             ->first();
+
+            dd($t2);
 
             $this->sapRepository->create([
                 'sociedad'=>$t->BUKRS,
