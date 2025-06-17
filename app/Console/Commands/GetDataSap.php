@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Repositories\SapRepository;
 use Carbon\Carbon;
-use DB;
+use DB as DB;
 
 class GetDataSap extends Command
 {
@@ -37,7 +37,7 @@ class GetDataSap extends Command
         $tickets = DB::connection('odbc')
         ->table('SAPCPR.ZMM_CABROM')
         ->select('*')
-      //  ->where('FECFD',  date("Ymd"))
+        ->where('FECFD',  date("Ymd"))
       //  ->orWhere('FECFD',  date("Ymd",strtotime('-1 day')))
       //  ->orWhere('FECFD',  date("Ymd",strtotime('-2 day')))
        //->limit(1)
@@ -83,7 +83,8 @@ class GetDataSap extends Command
                 'aves_muertas'=>$t2->AVEMU,
                 'aves_faltantes'=>$t2->AVEDEC,
                 'aves_descartadas'=>$t2->AVEDES,
-                'aves_contador'=>0
+                'aves_contador'=>0,
+                'status'=>$t->STATU
             ]);
 
         }

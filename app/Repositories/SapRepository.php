@@ -138,7 +138,21 @@ final class SapRepository{
 
         return $auditoria->update($data);
 
+    }
 
+    public function updateFromTicket(array $data, $ticket){
+
+        $ticketToUpdate = $this->model->where('ticket',$ticket)->first();
+
+        if($ticketToUpdate){
+            return $ticketToUpdate->update($data);
+        }
+
+         return [
+            'status' => 400,
+            'body' => json_encode(['message'=>'No se encontro ticket'], true)
+        ];
+        
     }
 
 
