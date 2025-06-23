@@ -57,7 +57,8 @@ class GetUnclosedDiscards extends Command
 
         if(isset($discards['body']['data'])){
             foreach($discards['body']['data']  as $d){
-                dd($d);
+                echo json_encode($d).' /  ';
+
                 $this->sapRepository->saveFromApi($d);
             }
         }

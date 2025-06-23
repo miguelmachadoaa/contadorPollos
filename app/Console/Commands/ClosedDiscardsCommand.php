@@ -15,7 +15,7 @@ class ClosedDiscardsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:closed-tickets';
+    protected $signature = 'app:closed-discards';
 
     /**
      * The console command description.

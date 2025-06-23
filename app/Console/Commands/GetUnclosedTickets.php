@@ -57,7 +57,7 @@ class GetUnclosedTickets extends Command
 
         if(isset($tickets['body']['data'])){
             foreach($tickets['body']['data']  as $d){
-                dd($d);
+               echo json_encode($d, true).' /  ';
                 echo $d['ticket'].' / ';
                 $this->sapRepository->saveFromApi($d);
             }
