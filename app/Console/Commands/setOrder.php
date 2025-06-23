@@ -47,8 +47,10 @@ class setOrder extends Command
     public function handle()
     {
         $orders = $this->sapRepository->searchBy([
-            'fecha_tara_inicial'=>date('Y-m-d')
+            'id'=>'13250'
         ]);
+
+
 
         foreach($orders as $orden ){
 
@@ -79,7 +81,9 @@ class setOrder extends Command
                 "cantidad_aves_jaula"=> $orden->aves_por_jaula,
             ]);
 
-            dd($response);
+           echo json_encode($response);
+
+            //dd($response);
 
         }
 
