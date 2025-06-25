@@ -77,7 +77,7 @@
 		<div class="container">
 			<nav class="navbar navbar-expand-lg navbar-dark stroke">
 				<h1><a class="navbar-brand" href="{{url('/')}}">
-					<img src="{{url('images/MigtoursLLC.png')}}" alt="MigTours">
+					<img src="{{url('images/logo_150.png')}}" alt="Decohouse">
 				</a></h1>
 				<!-- if logo is image enable this   
 			<a class="navbar-brand" href="#index.html">
@@ -91,17 +91,15 @@
 	  
 				<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
 					<ul class="navbar-nav ml-lg-5">
-						
 
 						<li class="nav-item  ">
 							<a class="nav-link libre-baskerville-regular" href="{{url('contacto')}}">{{ __('main.contacto') }}</a>
 						</li>
-						
 
 					</ul>
 				<ul class="navbar-nav ml-auto">
 						<li class="nav-item ml-4">
-							<a class="nav-link phone libre-baskerville-regular" ><span class="fa fa-phone"></span> +1 (305) 542-5238</a>
+							<a class="nav-link phone libre-baskerville-regular" ><span class="fa fa-phone"></span> {{$configuracion->whatsapp}}</a>
 						</li>
 
 						@if($configuracion->show_idioma)

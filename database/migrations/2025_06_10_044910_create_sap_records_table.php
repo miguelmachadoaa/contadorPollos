@@ -52,6 +52,8 @@ return new class extends Migration
 
             $table->integer('aves_muertas')->nullable();
             $table->integer('aves_faltantes')->nullable();
+            $table->integer('aves_faltantes_robo')->nullable();
+            $table->integer('aves_faltantes_carga')->nullable();
             $table->integer('aves_descartadas')->nullable();
             $table->integer('aves_contador')->nullable();
             $table->string('status')->nullable();

@@ -5,16 +5,16 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Repositories\SapRepository;
 use Carbon\Carbon;
-use DB as DB;
+use Illuminate\Support\Facades\DB;
 
-class GetDataSap extends Command
+class UpdateDataSap extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:get-data-sap';
+    protected $signature = 'app:update-data-sap';
 
     /**
      * The console command description.
