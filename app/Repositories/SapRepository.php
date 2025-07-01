@@ -29,15 +29,17 @@ final class SapRepository{
             $this->updateFromApi($data, $ticket);
 
         }else{
-            $this->createFromApi($data);
+            $ticket = $this->createFromApi($data);
 
         }
+
+        return $ticket;
     }
 
     public function createFromApi(array $data)
     {
 
-        $this->model->create([
+        $ticket = $this->model->create([
             'sociedad'=>$data['sociedad'],
             'ejercicio'=>$data['ejercicio'],
             'ticket'=>$data['ticket'],
@@ -70,23 +72,20 @@ final class SapRepository{
             'aves_contador'=>$data['aves_contador']??0,
         ]);
 
-        return true;
+        return $ticket;
     }
 
     public function create(array $data)
     {
         $ticket = $this->model->where('ticket', $data['ticket'])->first();
 
-        if($ticket){
-
-            $ticket->update($data);
-
-        }else{
-            $this->model->create($data);
+        if(!$ticket)
+        {
+            $ticket = $this->model->create($data);
 
         }
 
-        return true;
+        return $ticket;
     }
 
      public function updateFromApi(array $data, $ticket){

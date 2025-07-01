@@ -60,12 +60,15 @@ class ClosedDiscardsCommand extends Command
 
                 echo $d['ticket'].' / ';
 
-                $this->sapRepository->saveFromApi($d);
+                $ticket = $this->sapRepository->saveFromApi($d);
 
                 $response = $this->apiService->closeDiscard(['ticket'=>$d['ticket']]);
 
                 if($response['status']==200){
                     $this->sapRepository->updateFromTicket(['status'=>'C'], $d['ticket']);
+
+                    $ticket->update([
+                        'proceso'=>'descarte_cerrado']);
                 }
             }
         }

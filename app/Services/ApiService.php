@@ -1,6 +1,8 @@
 <?php
 namespace App\Services;
 
+use App\Repositories\AuditoriaRepository;
+
 class ApiService
 {
     protected $baseUrl;
@@ -8,7 +10,9 @@ class ApiService
     protected $pass;
     protected $token;
 
-    public function __construct()
+    public function __construct(
+        private readonly AuditoriaRepository $auditoriaRepository
+    )
     {
         $this->baseUrl = 'http://server10.globalwsystems.com:8212/integracion';
         $this->user ='integración';
@@ -21,17 +25,23 @@ class ApiService
 
     private function makeRequest($method, $endpoint, $data = null)
     {
+        $this->auditoriaRepository->create([
+            'type'=>'api',
+            'type_id'=>1,
+            'accion'=>$endpoint,
+            'data'=>json_encode($data, true)
+        ]);
 
         $url = "{$this->baseUrl}{$endpoint}";
 
         $curl = curl_init();
 
-       
-
         curl_setopt_array($curl, [
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST => strtoupper($method),
+            CURLOPT_CONNECTTIMEOUT => 10, 
+            CURLOPT_TIMEOUT => 30, 
             CURLOPT_HTTPHEADER => [
                 "Authorization: Bearer {$this->token}",
                 "Content-Type: application/json"
@@ -55,6 +65,13 @@ class ApiService
 
         curl_close($curl);
 
+        $this->auditoriaRepository->create([
+            'type'=>'api',
+            'type_id'=>2,
+            'accion'=>$endpoint,
+            'data'=>$response
+        ]);
+
         return [
             'status' => $httpCode,
             'body' => json_decode($response, true)
@@ -75,6 +92,9 @@ class ApiService
     public function setOrder(array $data)
     {
         $this->authenticate();
+
+
+
         return $this->makeRequest('POST', '/setOrder', $data);
     }
 

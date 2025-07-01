@@ -60,14 +60,19 @@ class ClosedTicketsCommand extends Command
 
                 echo $d['ticket'].' / ';
 
-                $this->sapRepository->saveFromApi($d);
+                $ticket = $this->sapRepository->saveFromApi($d);
 
                 $response = $this->apiService->closeticket(['ticket'=>$d['ticket']]);
 
                 echo json_encode($response);
 
                 if($response['status']==200){
-                   //$this->sapRepository->updateFromTicket(['status'=>'C'], $d['ticket']);
+
+                    
+                   $this->sapRepository->updateFromTicket(['status'=>'C'], $d['ticket']);
+
+                   $ticket->update([
+                        'proceso'=>'ticket_cerrado']);
                 }
             }
         }

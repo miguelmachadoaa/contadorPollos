@@ -34,64 +34,40 @@ class UpdateDataSap extends Command
      */
     public function handle()
     {
-        $tickets = DB::connection('odbc')
-        ->table('SAPCPR.ZMM_CABROM')
-        ->select('*')
-        ->where('FECFD',  date("Ymd"))
-      //  ->orWhere('FECFD',  date("Ymd",strtotime('-1 day')))
-      //  ->orWhere('FECFD',  date("Ymd",strtotime('-2 day')))
-       //->limit(1)
-        ->get();
+       
+       $tickets = $this->sapRepository->searchBy(['proceso'=>'descarte_cerrado']);
 
-        foreach($tickets as $t){
+      // dd($tickets);
 
+       foreach($tickets as $ticket){
 
-            echo $t->DOCNR.' / ';
+        echo $ticket->ticket.' | ';
 
-            $t2 = DB::connection('odbc')
+            $data = DB::connection('odbc')
             ->table('SAPCPR.ZMM_DETROM')
-            ->select('*')
-            ->where('DOCNR',  $t->DOCNR)
-            ->first();
-
-            $this->sapRepository->create([
-                'sociedad'=>$t->BUKRS,
-                'ejercicio'=>$t->GJAHR,
-                'ticket'=>$t->DOCNR,
-                'placa'=>$t->PLACA,
-                'peso_tara_inicial'=>$t2->TARAP,
-                'fecha_tara_inicial'=>$this->formatFecha($t2->FECHP),
-                'hora_tara_inicial'=>$t2->HORAP,
-                'peso_bruto_planta'=>$t2->BRUTP,
-                'prom_neto_planta'=>0,
-                'fecha_inicio'=>$this->formatFecha($t2->FECBP),
-                'hora_inicio'=>$t2->HORBP,
-                'peso_bruto_espera'=>$t2->REPEP,
-                'neto_fin_planta'=>$t2->NETOP,
-                'fecha_fin_planta'=>$this->formatFecha($t2->FECFP),
-                'hora_fin_planta'=>$t2->HORFP,
-                'transportista'=>$t->CODTRA,
-                'ci_chofer'=>$t->CODCH,
-                'chofer'=>' ',
-                'cod_procedencia'=>$t->CODAC,
-                'procedencia'=>' ',
-                'orden_carga'=>$t->NORCA,
-                'n_galpon'=>$t->CODGA,
-                'jaulas'=>0,
-                'aves_por_jaula'=>0,
-                'cant_aves'=>0,
-                'num_lote'=>$t->NUMLO,
-                'aves_muertas'=>$t2->AVEMU,
-                'aves_muertas_kilos'=>$t2->AVEMK,
-                'aves_faltantes'=>$t2->AVEDEC,
-                'aves_faltantes_robo'=>$t2->AVEF1U,
-                'aves_faltantes_carga'=>$t2->AVEF2U,
-                'aves_descartadas'=>$t2->AVEDES,
-                'aves_contador'=>0,
-                'status'=>$t->STATU
+            ->where('DOCNR', $ticket->ticket)
+            ->update([
+                'AVEREA' => $ticket->aves_contador,
+                'AVEMU'  => $ticket->aves_muertas,
+                'AVEDEC' => $ticket->aves_faltantes,
+                'AVEF1U' => $ticket->aves_faltantes_robo,
+                'AVEF2U' => $ticket->aves_faltantes_carga,
+                'AVEF3U' => $ticket->aves_faltantes_imputable,
+                'AVEF4U' => $ticket->aves_faltantes_sistema,
+                'AVED1U' => $ticket->aves_sobre_escaldado_unidad,
+                'AVED1K' => $ticket->aves_sobre_escaldado_kilo,
+                'AVED2U' => $ticket->aves_defectuosa_unidad,
+                'AVED2K' => $ticket->aves_defectuosa_kilo,
+                'AVED3U' => $ticket->aves_rojas_unidad,
+                'AVED3K' => $ticket->aves_rojas_kilo,
+                'AVED4U' => $ticket->aves_mutilados_unidad,
+                'AVED4K' => $ticket->aves_mutilados_kilo,
+                'AVEDES' => $ticket->aves_descartadas,
             ]);
 
-        }
+           // dd($data);
+
+       }
 
 
     }

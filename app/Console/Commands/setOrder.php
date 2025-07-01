@@ -47,7 +47,7 @@ class setOrder extends Command
     public function handle()
     {
         $orders = $this->sapRepository->searchBy([
-            'id'=>'13250'
+            'proceso'=>'recibido_sap'
         ]);
 
 
@@ -79,6 +79,7 @@ class setOrder extends Command
                 "galpon_numero"=> $orden->n_galpon,
                 "cantidad_jaulas"=> $orden->jaulas,
                 "cantidad_aves_jaula"=> $orden->aves_por_jaula,
+                'proceso'=>'enviado_api'
             ]);
 
            echo json_encode($response);

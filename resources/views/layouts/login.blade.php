@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <title>Migtours</title>
+  <title>Grupo La Caridad</title>
 
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{url('assets/css/style-starter.css')}}">
@@ -52,7 +52,7 @@
 
   <!--footer section start-->
 <footer class="dashboard">
-  <p>&copy Migtours. All Rights Reserved | Design by <a href="https://maymi.com.ve/" target="_blank"
+  <p>&copy Grupo La Caridad. All Rights Reserved | Design by <a href="https://maymi.com.ve/" target="_blank"
       class="text-primary">Agencia Maymi.</a></p>
 </footer>
 <!--footer section end-->

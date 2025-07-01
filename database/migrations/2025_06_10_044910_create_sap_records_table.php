@@ -54,9 +54,23 @@ return new class extends Migration
             $table->integer('aves_faltantes')->nullable();
             $table->integer('aves_faltantes_robo')->nullable();
             $table->integer('aves_faltantes_carga')->nullable();
+            $table->integer('aves_faltantes_imputable')->nullable();
+            $table->integer('aves_faltantes_sistema')->nullable();
+            $table->integer('aves_sobre_escaldado_unidad')->nullable();
+            $table->integer('aves_sobre_escaldado_kilo')->nullable();
+            $table->integer('aves_defectuosa_unidad')->nullable();
+            $table->integer('aves_defectuosa_kilo')->nullable();
+            $table->integer('aves_rojas_unidad')->nullable();
+            $table->integer('aves_rojas_kilo')->nullable();
+            $table->integer('aves_caquexicos_unidad')->nullable();
+            $table->integer('aves_caquexicos_kilo')->nullable();
+            $table->integer('aves_mutilados_unidad')->nullable();
+            $table->integer('aves_mutilados_kilo')->nullable();
             $table->integer('aves_descartadas')->nullable();
             $table->integer('aves_contador')->nullable();
+
             $table->string('status')->nullable();
+            $table->string('proceso')->nullable();
 
             $table->timestamps();
 
