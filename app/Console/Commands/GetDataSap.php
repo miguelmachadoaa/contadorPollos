@@ -8,6 +8,7 @@ use App\Repositories\SapRepository;
 use App\Repositories\AuditoriaRepository;
 use Carbon\Carbon;
 use DB as DB;
+use Illuminate\Support\Facades\Log;
 
 class GetDataSap extends Command
 {
@@ -39,41 +40,77 @@ class GetDataSap extends Command
     public function handle()
     {
 
+        Log::info('Ejecucion de get data sap ');
+
         $cantidad = DB::connection('odbc')
         ->table('SAPCPR.ZMM_CABROM')
         ->select('*')
-        ->where('FECID',  date("20250630"))
-        //->where('FECID',  date("Ymd"))
-      // ->limit(1)
+         ->where('GJAHR',  '2024')
+        ->where('FECID',  date("Ymd", strtotime("-1 day")))
         ->count();
 
 
         if(!$cantidad){
+            Log::info('No hay tickets para procesar');
             echo 'No hay tickets para procesar';
             die();
         }
 
+            echo $cantidad .' | ';
 
         $tickets = DB::connection('odbc')
         ->table('SAPCPR.ZMM_CABROM')
         ->select('*')
-        ->where('FECID',  date("20250630"))
-        ///->where('FECID',  date("Ymd"))
-      // ->limit(1)
+        ->where('FECID',  date("Ymd", strtotime("-1 day")))
+        ->where('GJAHR',  '2024')
         ->get();
+
 
 
 
         foreach($tickets as $t){
 
+            echo $t->DOCNR.' || '.$t->BENEFICIADORA.' / ';
 
-            echo $t->DOCNR.' / ';
+            Log::info($t->DOCNR.' || '.$t->BENEFICIADORA.' / '.$t->STATU);
 
             $t2 = DB::connection('odbc')
             ->table('SAPCPR.ZMM_DETROM')
             ->select('*')
             ->where('DOCNR',  $t->DOCNR)
+            ->where('GJAHR',  $t->GJAHR)
             ->first();
+
+            if($t->BENEFICIADORA!='J075024400' ){
+
+                continue;
+            }
+
+            if( $t2->MATNR!='20064'){
+
+                continue;
+            }
+
+            if( $t2->MATNR!='20064'){
+
+                continue;
+            }
+
+            if( $t->STATU=='P' or $t->STATU=='X'){
+
+            }else{
+                
+                continue;
+
+            }
+
+
+            // Opcional: imprimir los resultados
+          /*  foreach ($result as $row) {
+                echo "{$row->COLUMNNAME} ({$row->DATATYPE}) - {$row->LENGTH}, decimales: {$row->DECIMALCOUNT}\n";
+            }
+
+            die();*/
 
 
             $t3 = DB::connection('odbc')
@@ -90,8 +127,9 @@ class GetDataSap extends Command
 
 
            // dd($t4);
-           // dd($t, $t2, $t3);
+          //  dd($t, $t2, $t3, $t4);
 
+            Log::info($t->DOCNR.' || '.$t2->BRUTP.' / '.$t2->HORBP);
 
             $orden = $this->sapRepository->create([
                 'sociedad'=>$t->BUKRS,
@@ -99,10 +137,10 @@ class GetDataSap extends Command
                 'ticket'=>$t->DOCNR,
                 'placa'=>$t->PLACA,
                 'peso_tara_inicial'=>$t2->TARAP,
-                'fecha_tara_inicial'=>$this->formatFecha($t2->FECHP),
-                'hora_tara_inicial'=>$t2->HORAP,
+                'fecha_tara_inicial'=>$this->formatFecha($t->FECID),
+                'hora_tara_inicial'=>$t->HORID,
                 'peso_bruto_planta'=>$t2->BRUTP,
-                'prom_neto_planta'=>0,
+                'prom_neto_planta'=>$t2->BRUTP-$t2->TARAP,
                 'fecha_inicio'=>$this->formatFecha($t2->FECBP),
                 'hora_inicio'=>$t2->HORBP,
                 'peso_bruto_espera'=>$t2->REPEP,
@@ -116,9 +154,9 @@ class GetDataSap extends Command
                 'procedencia'=>$t4->NOMPRO,
                 'orden_carga'=>$t->NORCA,
                 'n_galpon'=>$t->CODGA,
-                'jaulas'=>0,
-                'aves_por_jaula'=>0,
-                'cant_aves'=>0,
+                'jaulas'=>$t2->CANJA,
+                'aves_por_jaula'=>$t2->AVEXJ,
+                'cant_aves'=>($t2->CANJA*$t2->AVEXJ),
                 'num_lote'=>$t->NUMLO,
                 'aves_contador'=>$t2->AVEREA,
                 'aves_muertas'=>$t2->AVEMU,
@@ -134,10 +172,10 @@ class GetDataSap extends Command
                 'aves_defectuosa_kilo'=>$t2->AVED2K,
                 'aves_rojas_unidad'=>$t2->AVED3U,
                 'aves_rojas_kilo'=>$t2->AVED3K,
-                'aves_caquexicos_unidad'=>$t2->AVED3U,
-                'aves_caquexicos_kilo'=>$t2->AVED3K,
-                'aves_mutilados_unidad'=>$t2->AVED4U,
-                'aves_mutilados_kilo'=>$t2->AVED4K,
+                'aves_caquexicos_unidad'=>$t2->AVED4U,
+                'aves_caquexicos_kilo'=>$t2->AVED4K,
+                'aves_mutilados_unidad'=>$t2->AVED5U,
+                'aves_mutilados_kilo'=>$t2->AVED5K,
                 'aves_descartadas'=>$t2->AVEDES,
                 'status'=>$t->STATU,
                 'proceso'=>'recibido_sap',
@@ -147,7 +185,9 @@ class GetDataSap extends Command
 
                 if($orden->proceso=='recibido_sap'){
 
-                     $response =  $this->apiService->setOrder([
+                    echo json_encode([
+                    "sociedad"=> $orden->sociedad,
+                    "ejercicio"=> $orden->ejercicio,
                     "ticket"=> $orden->ticket,
                     "placa"=> $orden->placa,
                     "tara_inicial"=> $orden->peso_tara_inicial,
@@ -172,46 +212,72 @@ class GetDataSap extends Command
                     "galpon_numero"=> $orden->n_galpon,
                     "cantidad_jaulas"=> ($orden->jaulas==0)?1:$orden->jaulas,
                     "cantidad_aves_jaula"=> ($orden->aves_por_jaula==0)?1:$orden->aves_por_jaula,
+                    "suma"=> $orden->aves_por_jaula*$orden->jaulas,
+                    "lote_numero"=> $orden->num_lote,
+                    "aves_muertas"=> $orden->aves_muertas,
+                    "aves_faltantes"=> $orden->aves_faltantes,
+                    "aves_descartadas"=> $orden->aves_descartadas,
+                    ]);
+
+                    echo  '   |   ';
+
+                     $response =  $this->apiService->setOrder([
+                    "sociedad"=> $orden->sociedad,
+                    "ejercicio"=> $orden->ejercicio,
+                    "ticket"=> $orden->ticket,
+                    "placa"=> $orden->placa,
+                    "tara_inicial"=> $orden->peso_tara_inicial,
+                    "fecha_inicial"=> $orden->fecha_tara_inicial,
+                    "hora_inicial"=> $orden->hora_tara_inicial,
+                    "bruto_planta"=> $orden->peso_bruto_planta,
+                    "neto_planta"=> ($orden->prom_neto_planta==0)?1:$orden->prom_neto_planta,
+                    "fecha_planta"=> $orden->fecha_inicio,
+                    "hora_planta"=> $orden->hora_inicio,
+                    "bruto_espera"=> $orden->peso_bruto_espera,
+                    "fecha_espera"=> $orden->fecha_inicio,
+                    "hora_espera"=> $orden->hora_inicio,
+                    "neto_fin_planta"=> $orden->neto_fin_planta,
+                    "fecha_fin_planta"=> $orden->fecha_fin_planta,
+                    "hora_fin_planta"=> $orden->hora_fin_planta,
+                    "transportista"=> $orden->transportista,
+                    "chofer_ci"=> $orden->ci_chofer,
+                    "chofer_nombre"=> $orden->chofer,
+                    "procedencia_codigo"=> $orden->cod_procedencia,
+                    "procedencia_nombre"=> $orden->procedencia,
+                    "codigo_orden"=> $orden->orden_carga,
+                    "galpon_numero"=> $orden->n_galpon,
+                    "cantidad_jaulas"=> ($orden->jaulas==0)?1:$orden->jaulas,
+                    "cantidad_aves_jaula"=> ($orden->aves_por_jaula==0)?1:$orden->aves_por_jaula,
+                    "suma"=> $orden->aves_por_jaula*$orden->jaulas,
+                    "lote_numero"=> $orden->num_lote,
+                    "aves_muertas"=> $orden->aves_muertas,
+                    "aves_faltantes"=> $orden->aves_faltantes,
+                    "aves_descartadas"=> $orden->aves_descartadas,
                     ]);
 
                      
 
                  echo json_encode($response);
 
-              //  dd($response);
+                 Log::info(json_encode($response));
 
-                 $orden->update([
-                    'proceso'=>'enviado_api']);
+                // date("Ymd")
+
+                    echo  '   |   ';
+
+
+                    if(isset($response['status']) &&  $response['status'] == 200){
+                            $orden->update([
+                                'proceso'=>'enviado_api'
+                            ]);
+                    }
+                
 
                 }else{
 
-                    $response =  $this->apiService->setOrder([
-                    "ticket"=> $orden->ticket,
-                    "placa"=> $orden->placa,
-                    "tara_inicial"=> $orden->peso_tara_inicial,
-                    "fecha_inicial"=> $orden->fecha_tara_inicial,
-                    "hora_inicial"=> $orden->hora_tara_inicial,
-                    "bruto_planta"=> $orden->peso_bruto_planta,
-                    "neto_planta"=> ($orden->prom_neto_planta==0)?1:$orden->prom_neto_planta,
-                    "fecha_planta"=> $orden->fecha_inicio,
-                    "hora_planta"=> $orden->hora_inicio,
-                    "bruto_espera"=> $orden->peso_bruto_espera,
-                    "fecha_espera"=> $orden->fecha_inicio,
-                    "hora_espera"=> $orden->hora_inicio,
-                    "neto_fin_planta"=> $orden->neto_fin_planta,
-                    "fecha_fin_planta"=> $orden->fecha_fin_planta,
-                    "hora_fin_planta"=> $orden->hora_fin_planta,
-                    "transportista"=> $orden->transportista,
-                    "chofer_ci"=> $orden->ci_chofer,
-                    "chofer_nombre"=> $orden->chofer,
-                    "procedencia_codigo"=> $orden->cod_procedencia,
-                    "procedencia_nombre"=> $orden->procedencia,
-                    "codigo_orden"=> $orden->orden_carga,
-                    "galpon_numero"=> $orden->n_galpon,
-                    "cantidad_jaulas"=> ($orden->jaulas==0)?1:$orden->jaulas,
-                    "cantidad_aves_jaula"=> ($orden->aves_por_jaula==0)?1:$orden->aves_por_jaula,
-                    ]);
                     echo 'Orden ya registrada en api | ';
+
+                    Log::info('Orden ya registrada en api ');
                 }
 
                  

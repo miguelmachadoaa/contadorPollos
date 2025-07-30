@@ -7,6 +7,11 @@
     <div class="card">
         <div class="card-body datatable-responsive">
             @livewire('sap-records-table')
+            
+            
+        </div>
+        <div>
+            <!-- Tu tabla y paginador -->
         </div>
     </div>
 </div>

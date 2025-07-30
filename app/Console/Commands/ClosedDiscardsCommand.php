@@ -60,7 +60,42 @@ class ClosedDiscardsCommand extends Command
 
                 echo $d['ticket'].' / ';
 
-                $ticket = $this->sapRepository->saveFromApi($d);
+                 $data = array();
+                $data['ticket']= $d['ticket'];
+                $data['aves_descartadas']= $d['aves_descartadas'];
+
+                if(count($d['aves_descartadas_detalle'])){
+
+                    foreach($d['aves_descartadas_detalle'] as $detalle){
+
+                        if($detalle['key']=='PSE'){
+                            $data['aves_sobre_escaldado_unidad']=$detalle['cantidad_unidades'];
+                        }
+
+                        if($detalle['key']=='PDF'){
+                            $data['aves_defectuosa_unidad']=$detalle['cantidad_unidades'];
+                        }
+
+                        if($detalle['key']=='PRJ'){
+                            $data['aves_rojas_unidad']=$detalle['cantidad_unidades'];
+                        }
+
+                        if($detalle['key']=='PCQ'){
+                            $data['aves_caquexicos_unidad']=$detalle['cantidad_unidades'];
+                        }
+
+                        if($detalle['key']=='PMT'){
+                            $data['aves_mutilados_unidad']=$detalle['cantidad_unidades'];
+                        }
+                    }
+                }
+
+                $ticket =  $this->sapRepository->searchOneBy(['ticket'=>$data['ticket']]);
+
+                if($ticket){
+                    $this->sapRepository->update($data, $ticket->id);
+
+                }
 
                 $response = $this->apiService->closeDiscard(['ticket'=>$d['ticket']]);
 

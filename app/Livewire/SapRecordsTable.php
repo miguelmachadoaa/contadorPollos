@@ -7,16 +7,24 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
+use Livewire\WithPagination;
 
 class SapRecordsTable extends DataTableComponent
 {
+    use WithPagination;
+
     protected $model = SapRecord::class;
 
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-             ->setDefaultSort('created_at', 'desc');
+             ->setDefaultSort('created_at', 'desc')
+            ->setPerPageAccepted([25, 50, 100, 200])
+             ->setPerPage(100)
+            ;
     }
+
+   
 
     public function columns(): array
     {

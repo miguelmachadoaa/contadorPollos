@@ -55,34 +55,46 @@ class setOrder extends Command
         foreach($orders as $orden ){
 
            $response =  $this->apiService->setOrder([
-                "ticket"=> $orden->ticket,
-                "placa"=> $orden->placa,
-                "tara_inicial"=> $orden->peso_tara_inicial,
-                "fecha_inicial"=> $orden->fecha_tara_inicial,
-                "hora_inicial"=> $orden->hora_tara_inicial,
-                "bruto_planta"=> $orden->peso_bruto_planta,
-                "neto_planta"=> $orden->prom_neto_planta,
-                "fecha_planta"=> $orden->fecha_inicio,
-                "hora_planta"=> $orden->hora_inicio,
-                "bruto_espera"=> $orden->peso_bruto_espera,
-                "fecha_espera"=> $orden->fecha_inicio,
-                "hora_espera"=> $orden->hora_inicio,
-                "neto_fin_planta"=> $orden->neto_fin_planta,
-                "fecha_fin_planta"=> $orden->fecha_fin_planta,
-                "hora_fin_planta"=> $orden->hora_fin_planta,
-                "transportista"=> $orden->transportista,
-                "chofer_ci"=> $orden->ci_chofer,
-                "chofer_nombre"=> $orden->chofer,
-                "procedencia_codigo"=> $orden->cod_procedencia,
-                "procedencia_nombre"=> $orden->procedencia,
-                "codigo_orden"=> $orden->orden_carga,
-                "galpon_numero"=> $orden->n_galpon,
-                "cantidad_jaulas"=> $orden->jaulas,
-                "cantidad_aves_jaula"=> $orden->aves_por_jaula,
-                'proceso'=>'enviado_api'
-            ]);
+                    "sociedad"=> $orden->sociedad,
+                    "ejercicio"=> $orden->ejercicio,
+                    "ticket"=> $orden->ticket,
+                    "placa"=> $orden->placa,
+                    "tara_inicial"=> $orden->peso_tara_inicial,
+                    "fecha_inicial"=> $orden->fecha_tara_inicial,
+                    "hora_inicial"=> $orden->hora_tara_inicial,
+                    "bruto_planta"=> $orden->peso_bruto_planta,
+                    "neto_planta"=> ($orden->prom_neto_planta==0)?1:$orden->prom_neto_planta,
+                    "fecha_planta"=> $orden->fecha_inicio,
+                    "hora_planta"=> $orden->hora_inicio,
+                    "bruto_espera"=> $orden->peso_bruto_espera,
+                    "fecha_espera"=> $orden->fecha_inicio,
+                    "hora_espera"=> $orden->hora_inicio,
+                    "neto_fin_planta"=> $orden->neto_fin_planta,
+                    "fecha_fin_planta"=> $orden->fecha_fin_planta,
+                    "hora_fin_planta"=> $orden->hora_fin_planta,
+                    "transportista"=> $orden->transportista,
+                    "chofer_ci"=> $orden->ci_chofer,
+                    "chofer_nombre"=> $orden->chofer,
+                    "procedencia_codigo"=> $orden->cod_procedencia,
+                    "procedencia_nombre"=> $orden->procedencia,
+                    "codigo_orden"=> $orden->orden_carga,
+                    "galpon_numero"=> $orden->n_galpon,
+                    "cantidad_jaulas"=> ($orden->jaulas==0)?1:$orden->jaulas,
+                    "cantidad_aves_jaula"=> ($orden->aves_por_jaula==0)?1:$orden->aves_por_jaula,
+                    "suma"=> $orden->aves_por_jaula*$orden->jaulas,
+                    "lote_numero"=> $orden->num_lote,
+                    "aves_muertas"=> $orden->aves_muertas,
+                    "aves_faltantes"=> $orden->aves_faltantes,
+                    "aves_descartadas"=> $orden->aves_descartadas,
+                    ]);
+
 
            echo json_encode($response);
+
+              //  dd($response);
+
+                 $orden->update([
+                    'proceso'=>'enviado_api']);
 
             //dd($response);
 

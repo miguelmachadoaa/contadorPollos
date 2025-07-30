@@ -64,4 +64,10 @@ class  SapRecord extends Model
         'status',
         'proceso',
     ];
+
+    public function setChoferAttribute($value)
+    {
+        $this->attributes['chofer'] = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $value);
+    }
+
 } 

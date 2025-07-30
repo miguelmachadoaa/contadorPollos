@@ -83,6 +83,13 @@ final class SapRepository{
         {
             $ticket = $this->model->create($data);
 
+        }else{
+            $ticket->update([
+                'peso_bruto_planta'=>$data['peso_bruto_planta'],
+                'prom_neto_planta'=>$data['prom_neto_planta'],
+                'peso_bruto_espera'=>$data['peso_bruto_espera'],
+                'hora_inicio'=>$data['hora_inicio']
+            ]);
         }
 
         return $ticket;
@@ -133,7 +140,7 @@ final class SapRepository{
 
     public function update(array $data, $id){
 
-        $auditoria = $this->model->with('usuario')->find($id);
+        $auditoria = $this->model->find($id);
 
         return $auditoria->update($data);
 
@@ -157,17 +164,17 @@ final class SapRepository{
 
     public function all()
     {   
-        return $this->model->with('usuario')->where('user_id', Auth::user()->id)->get();
+        return $this->model->where('user_id', Auth::user()->id)->get();
     }
 
     public function getByUser($id)
     {
-        return $this->model->with('usuario')->where('user_id', $id)->get();
+        return $this->model->where('user_id', $id)->get();
     }
 
     public function list()
     {
-        return $this->model->with('usuario')->where('user_id', Auth::user()->id)->get();
+        return $this->model->where('user_id', Auth::user()->id)->get();
     }
 
     public function delete($id)
@@ -188,5 +195,15 @@ final class SapRepository{
         return $query->get();
     }
 
+    public function searchOneBy(array $data)
+    {
+        $query = $this->model->select('*');
+
+        foreach($data as $key=>$value){
+            $query->where($key, $value);
+        }
+        
+        return $query->first();
+    }
 
 }

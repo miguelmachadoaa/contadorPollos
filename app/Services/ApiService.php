@@ -14,9 +14,10 @@ class ApiService
         private readonly AuditoriaRepository $auditoriaRepository
     )
     {
-        $this->baseUrl = 'http://server10.globalwsystems.com:8212/integracion';
+        #$this->baseUrl = 'http://server10.globalwsystems.com:8212/integracion';
+        $this->baseUrl = 'http://10.50.173.22:60011/integracion';
         $this->user ='integración';
-        $this->pass ='987654321';
+        $this->pass ='1nt3gr4c10n-Caridad2025';
         $this->token = null;
         
     }
@@ -25,12 +26,14 @@ class ApiService
 
     private function makeRequest($method, $endpoint, $data = null)
     {
-        $this->auditoriaRepository->create([
-            'type'=>'api',
-            'type_id'=>1,
-            'accion'=>$endpoint,
-            'data'=>json_encode($data, true)
-        ]);
+        
+
+            $this->auditoriaRepository->create([
+                'type'=>'api',
+                'type_id'=>1,
+                'accion'=>$endpoint,
+                'data'=>json_encode($data, true)
+            ]);
 
         $url = "{$this->baseUrl}{$endpoint}";
 
@@ -65,12 +68,14 @@ class ApiService
 
         curl_close($curl);
 
-        $this->auditoriaRepository->create([
-            'type'=>'api',
-            'type_id'=>2,
-            'accion'=>$endpoint,
-            'data'=>$response
-        ]);
+
+            $this->auditoriaRepository->create([
+                'type'=>'api',
+                'type_id'=>2,
+                'accion'=>$endpoint,
+                'data'=>$response
+            ]);
+            
 
         return [
             'status' => $httpCode,
@@ -92,8 +97,6 @@ class ApiService
     public function setOrder(array $data)
     {
         $this->authenticate();
-
-
 
         return $this->makeRequest('POST', '/setOrder', $data);
     }

@@ -36,6 +36,7 @@ class UpdateDataSap extends Command
     {
        
        $tickets = $this->sapRepository->searchBy(['proceso'=>'descarte_cerrado']);
+      # $tickets = $this->sapRepository->searchBy(['proceso'=>'update_sap']);
 
       // dd($tickets);
 
@@ -43,29 +44,47 @@ class UpdateDataSap extends Command
 
         echo $ticket->ticket.' | ';
 
-            $data = DB::connection('odbc')
-            ->table('SAPCPR.ZMM_DETROM')
-            ->where('DOCNR', $ticket->ticket)
-            ->update([
-                'AVEREA' => $ticket->aves_contador,
-                'AVEMU'  => $ticket->aves_muertas,
-                'AVEDEC' => $ticket->aves_faltantes,
-                'AVEF1U' => $ticket->aves_faltantes_robo,
-                'AVEF2U' => $ticket->aves_faltantes_carga,
-                'AVEF3U' => $ticket->aves_faltantes_imputable,
-                'AVEF4U' => $ticket->aves_faltantes_sistema,
-                'AVED1U' => $ticket->aves_sobre_escaldado_unidad,
-                'AVED1K' => $ticket->aves_sobre_escaldado_kilo,
-                'AVED2U' => $ticket->aves_defectuosa_unidad,
-                'AVED2K' => $ticket->aves_defectuosa_kilo,
-                'AVED3U' => $ticket->aves_rojas_unidad,
-                'AVED3K' => $ticket->aves_rojas_kilo,
-                'AVED4U' => $ticket->aves_mutilados_unidad,
-                'AVED4K' => $ticket->aves_mutilados_kilo,
-                'AVEDES' => $ticket->aves_descartadas,
-            ]);
+            
+            $docnr = substr($ticket->ticket, 0, 10);
 
-           // dd($data);
+            $cantidad = DB::connection('odbc')
+            ->table('SAPCPR.ZMM_DETROM')
+            ->select('*')
+            ->where('DOCNR',  $docnr)
+            ->count();
+
+
+            if($cantidad){
+
+               
+                $data = DB::connection('odbc')
+                ->table('SAPCPR.ZMM_DETROM')
+                ->where('DOCNR', $docnr)
+                ->update([
+                    'AVEREA' => $ticket->aves_contador??0,
+                    'AVEMU'  => $ticket->aves_muertas??0,
+                    'AVEDEC' => $ticket->aves_faltantes??0,
+                    'AVEF1U' => $ticket->aves_faltantes_robo??0,
+                    'AVEF2U' => $ticket->aves_faltantes_carga??0,
+                    'AVEF3U' => $ticket->aves_faltantes_imputable??0,
+                    'AVEF4U' => $ticket->aves_faltantes_sistema??0,
+                    'AVED1U' => $ticket->aves_sobre_escaldado_unidad??0,
+                    'AVED1K' => $ticket->aves_sobre_escaldado_kilo??0,
+                    'AVED2U' => $ticket->aves_defectuosa_unidad??0,
+                    'AVED2K' => $ticket->aves_defectuosa_kilo??0,
+                    'AVED3U' => $ticket->aves_rojas_unidad??0,
+                    'AVED3K' => $ticket->aves_rojas_kilo??0,
+                    'AVED4U' => $ticket->aves_caquexicos_unidad??0,
+                    'AVED4K' => $ticket->aves_caquexicos_kilo??0,
+                    'AVED5U' => $ticket->aves_mutilados_unidad??0,
+                    'AVED5K' => $ticket->aves_mutilados_kilo??0,
+                    'AVEDES' => $ticket->aves_descartadas??0,
+                ]);
+
+                $ticket->update([
+                            'proceso'=>'update_sap']);
+            }
+
 
        }
 
@@ -82,5 +101,3 @@ class UpdateDataSap extends Command
 
     }
 }
-
-

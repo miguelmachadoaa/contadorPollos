@@ -100,14 +100,14 @@ return [
             'username' => 'RETENCION2',
             'password' => '12345678'
         ],*/
-        'odbcQA' => [
-            'driver' => 'odbc',
-            'dsn' => 'MAXDB',
-            'database' => 'CPR',
-            'username' => 'RETENCION2',
-            'password' => '12345678'
-        ],
         'odbc' => [
+            'driver' => 'odbc',
+            'dsn' => 'MAXDBPRO',
+            'database' => 'CPR',
+            'username' => 'CONTADOR',
+            'password' => '753159'
+        ],
+        'odbcQA' => [
             'driver' => 'odbc',
             'dsn' => 'MAXDBCONTADOR',
             'database' => 'CQA',
